@@ -1,4 +1,3 @@
-using System;
 using backend.Data;
 using backend.Dtos.Stock;
 using backend.Mappers;
@@ -39,6 +38,7 @@ public class StockController : ControllerBase
     return Ok(stock.ToStockDto());
   }
 
+  // POST: api/stocks
   [HttpPost]
   public IActionResult CreateStock([FromBody] CreateStockDto stockDto)
   {
@@ -51,6 +51,7 @@ public class StockController : ControllerBase
     return CreatedAtAction(nameof(GetStock), new { id = stockModel.Id }, stockModel.ToStockDto());
   }
 
+  // PUT: api/stocks/5
   [HttpPut("{id}")]
   public IActionResult UpdateStock([FromRoute] int id, [FromBody] UpdateStockDto updateStockDto)
   {
@@ -72,5 +73,23 @@ public class StockController : ControllerBase
     _context.SaveChanges();
 
     return Ok(stockModel.ToStockDto());
+  }
+
+  // DELETE: api/stocks/5
+  [HttpDelete("{id}")]
+  public IActionResult DeleteStock([FromRoute] int id)
+  {
+    var stock = _context.Stocks.FirstOrDefault(stock => stock.Id == id);
+
+    if (stock == null)
+    {
+      return NotFound();
+    }
+
+    _context.Stocks.Remove(stock);
+
+    _context.SaveChanges();
+
+    return NoContent();
   }
 }
