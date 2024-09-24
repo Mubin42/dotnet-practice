@@ -1,5 +1,6 @@
 using System;
 using backend.Data;
+using backend.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
@@ -18,7 +19,7 @@ public class StockController : ControllerBase
   [HttpGet]
   public IActionResult GetStocks()
   {
-    var stocks = _context.Stocks.ToList();
+    var stocks = _context.Stocks.ToList().Select(stock => stock.ToStockDto());
 
     return Ok(stocks);
   }
@@ -34,6 +35,6 @@ public class StockController : ControllerBase
       return NotFound();
     }
 
-    return Ok(stock);
+    return Ok(stock.ToStockDto());
   }
 }
