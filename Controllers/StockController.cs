@@ -1,5 +1,6 @@
 using System;
 using backend.Data;
+using backend.Dtos.Stock;
 using backend.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,5 +37,17 @@ public class StockController : ControllerBase
     }
 
     return Ok(stock.ToStockDto());
+  }
+
+  [HttpPost]
+  public IActionResult CreateStock([FromBody] CreateStockDto stockDto)
+  {
+
+    var stockModel = stockDto.ToStockFromCreateDto();
+
+    _context.Stocks.Add(stockModel);
+    _context.SaveChanges();
+
+    return CreatedAtAction(nameof(GetStock), new { id = stockModel.Id }, stockModel.ToStockDto());
   }
 }
