@@ -16,11 +16,14 @@ public static class StockMappers
       LastDiv = stockModel.LastDiv,
       Industry = stockModel.Industry,
       MarketCap = stockModel.MarketCap,
+      Comments = stockModel.Comments.Select(c => c.ToCommentDto()).ToList()
     };
   }
 
-  public static Stock ToStockFromCreateDto(this CreateStockDto stockDto) {
-    return new Stock {
+  public static Stock ToStockFromCreateDto(this CreateStockDto stockDto)
+  {
+    return new Stock
+    {
       Symbol = stockDto.Symbol,
       CompanyName = stockDto.CompanyName,
       Purchase = stockDto.Purchase,
